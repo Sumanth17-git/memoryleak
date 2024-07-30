@@ -12,20 +12,42 @@ public class MemoryLeakService {
 
     private final Map<String, String> map = new HashMap<>();
 
-    public void createMemoryLeak() {
+      public void processpayment() {
+    	getpayment();
+       
+    }
+    public void getpayment() {
+    	gettransactionid();
+       
+    }
+    public void gettransactionid() {
+    	getuserdetails();
+       
+    }
+    public void getuserdetails() {
+    	validatepayment();
+       
+    }
+    public void validatepayment() {
+    	getpayemntid();
+       
+    }
+    public void getpayemntid() {
+    	updatepayment();
+       
+    }
+   
+    public void updatepayment() {
         while (true) {
             map.put(generateRandomString(), generateRandomString());
             // Optional: Add some delay to control the speed of memory allocation
-           /* try {
-                Thread.sleep(30); // Delay for 100 milliseconds
+          try {
+               Thread.sleep(5); // Delay for 100 milliseconds
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            */
-           
         }
     }
-
     private String generateRandomString() {
         // Generate a random string of large size
         return UUID.randomUUID().toString() + "-" + UUID.randomUUID().toString();
