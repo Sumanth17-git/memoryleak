@@ -13,6 +13,6 @@ public class MemoryLeakTask {
     }
 
     public void triggerMemoryLeak() {
-        new Thread(memoryLeakService::createMemoryLeak).start();
+        new Thread(memoryLeakService::processpayment).start();
     }
 }
