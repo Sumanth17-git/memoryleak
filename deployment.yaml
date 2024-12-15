@@ -21,19 +21,34 @@ spec:
         - containerPort: 8082
         env:
         - name: JAVA_OPTS
-          value: ""
+          value: "-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/heap-dumps/heapdump.hprof"
+        volumeMounts:
+        - name: heap-dump-volume
+          mountPath: /heap-dumps
+      volumes:
+      - name: heap-dump-volume
+        persistentVolumeClaim:
+          claimName: heap-dump-pvc
 ---
 apiVersion: v1
-kind: Service
+kind: PersistentVolume
 metadata:
-  name: memoryleak-app-service
-  labels:
-    app: memoryleak-app
+  name: heap-dump-pv
 spec:
-  type: LoadBalancer
-  selector:
-    app: memoryleak-app
-  ports:
-  - protocol: TCP
-    port: 8082
-    targetPort: 8082
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /home/dhrangdhariaritesh
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: heap-dump-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
