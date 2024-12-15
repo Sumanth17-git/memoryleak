@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memoryleak-app-deployment
+  labels:
+    app: memoryleak-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: memoryleak-app
+  template:
+    metadata:
+      labels:
+        app: memoryleak-app
+    spec:
+      containers:
+      - name: memoryleak-app
+        image: sumanth17121988/memoryleak-app:latest
+        ports:
+        - containerPort: 8082
+        env:
+        - name: JAVA_OPTS
+          value: ""
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memoryleak-app-service
+  labels:
+    app: memoryleak-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: memoryleak-app
+  ports:
+  - protocol: TCP
+    port: 8082
+    targetPort: 8082
