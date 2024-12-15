@@ -5,7 +5,7 @@ metadata:
   labels:
     app: memoryleak-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: memoryleak-app
@@ -40,7 +40,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /home/dhrangdhariaritesh
+    path: /home/dhrangdhariaritesh/heap-dumps
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -52,3 +52,18 @@ spec:
   resources:
     requests:
       storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memoryleak-app-service
+  labels:
+    app: memoryleak-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: memoryleak-app
+  ports:
+  - protocol: TCP
+    port: 8082    # External port to expose
+    targetPort: 8082 # Port inside the container
